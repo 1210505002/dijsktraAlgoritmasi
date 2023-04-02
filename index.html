@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Resim Seçici</title>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="dijkstraAlgoritmasi.js"></script>
+    <link rel="stylesheet" href="/style.css">
+  </head>
+  <body>
+    <!-- HTML kodu -->
+    <div class="soru">
+      <label for="secim" id="grafSorusu"
+        >Hangi graf türünü seçmek istersiniz:</label
+      >
+      <div class="radio-group">
+        <input
+          type="radio"
+          id="radius1"
+          name="secim"
+          value="yonlu"
+          onchange="gosterResim()"
+        />
+        <label for="radius1">Yönlendirilmiş</label>
+        <input
+          type="radio"
+          id="radius2"
+          name="secim"
+          value="yonsuz"
+          onchange="gosterResim()"
+        />
+        <label for="radius2">Yönlendirilmemiş</label>
+      </div>
+      <div class="kaynakAl">
+        <label for="kaynak">Kaynak düğümünü giriniz:</label>
+        <input type="text" id="kaynak" name="kaynak"/>
+      </div>
+      <div class="sonucu">
+        <p id="sonucBaslik">SONUÇ</p>
+        <p id="sonuc"></p>
+      </div>
+      <div class="butonlar">
+        <button onclick="hesapla()">Hesapla</button>
+        <button onclick="temizle()">Temizle</button>
+      </div>
+    </div>
+    <div class="resimContainer">
+      <img id="resim1" src="/resimler/yonluGraf.png" />
+      <img id="resim2" src="/resimler/yonsuzGraf.jpg" />
+    </div>
+    <script>
+      function gosterResim() {
+        const secili = document.querySelector('input[name="secim"]:checked');
+
+        if (secili) {
+          if (secili.value === "yonlu") {
+            document.getElementById("resim1").style.display = "block";
+            document.getElementById("resim2").style.display = "none";
+          } else if (secili.value === "yonsuz") {
+            document.getElementById("resim1").style.display = "none";
+            document.getElementById("resim2").style.display = "block";
+          }
+        }
+      }
+      function hesapla() {
+        const sonucu = document.getElementById("sonuc");
+        const secili = document.querySelector('input[name="secim"]:checked');
+        const kaynakDeger = document.getElementById("kaynak").value;
+        if (!secili) {
+          alert("Graf türünü boş bırakmayın");
+        }
+        if (kaynakDeger.trim() == "") {
+          alert("Kaynak düğümünü boş bırakmayın");
+        } else {
+          if (secili) {
+            if (secili.value === "yonlu") {
+              let regex = /^[ABCDEabcde]$/;
+              if (!regex.test(kaynakDeger)) {
+                alert(
+                  "Lütfen yalnızca 'A/a', 'B/b', 'C/c', 'D/d', 'E/e' harflerinden birini girin!"
+                );
+              } else {
+                const graf = {
+                  A: { B: 10, C: 5 },
+                  B: { D: 1 },
+                  C: { B: 3, D: 9, E: 2 },
+                  D: {},
+                  E: { A: 2, D: 6 },
+                };
+                var sonuc = dijkstra(graf, kaynakDeger.toUpperCase());
+                sonucu.innerText = JSON.stringify(sonuc);
+              }
+            } else if (secili.value === "yonsuz") {
+              let regex = /^[0-8]$/;
+              if (!regex.test(kaynakDeger)) {
+                alert(
+                  "Lütfen yalnızca 0,1,2,3,4,5,6,7,8 rakamlarından birini girin!"
+                );
+              } else {
+                const graf = {
+                  0: { 1: 4, 7: 8 },
+                  1: { 0: 4, 2: 8, 7: 11 },
+                  2: { 1: 8, 3: 7, 5: 4, 8: 2 },
+                  3: { 2: 7, 4: 9, 5: 14 },
+                  4: { 3: 9, 5: 10 },
+                  5: { 2: 4, 3: 14, 4: 10, 6: 2 },
+                  6: { 5: 2, 7: 1, 8: 6 },
+                  7: { 0: 8, 1: 11, 6: 1, 8: 7 },
+                  8: { 2: 2, 6: 6, 7: 7 },
+                };
+                var sonuc = dijkstra(graf, kaynakDeger);
+                sonucu.innerText = JSON.stringify(sonuc);
+              }
+            }
+          }
+        }
+      }
+      function temizle() {
+        const sonucu = document.getElementById("sonuc");
+        const secili = document.querySelector('input[name="secim"]:checked');
+        const kaynakDeger = document.getElementById("kaynak");
+        sonucu.innerText = "";
+        kaynakDeger.value = "";
+        secili.checked = false;
+        document.getElementById("resim2").style.display = "none";
+        document.getElementById("resim1").style.display = "none";
+      }
+    </script>
+  </body>
+</html>
