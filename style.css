@@ -66,6 +66,9 @@ img {
   .butonlar{
     display: flex;
   }
+  th, td{
+    text-align: center;
+  }
 
   button:hover {
     background-color: #3e8e41;
