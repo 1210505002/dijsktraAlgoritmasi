@@ -6,10 +6,9 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <script src="./dijkstraAlgoritmasi.js"></script>
-    <link rel="stylesheet" href="./style.css">
+    <link rel="stylesheet" href="./style.css" />
   </head>
   <body>
-    <!-- HTML kodu -->
     <div class="soru">
       <label for="secim" id="grafSorusu"
         >Hangi graf türünü seçmek istersiniz:</label
@@ -34,15 +33,23 @@
       </div>
       <div class="kaynakAl">
         <label for="kaynak">Kaynak düğümünü giriniz:</label>
-        <input type="text" id="kaynak" name="kaynak"/>
-      </div>
-      <div class="sonucu">
-        <p id="sonucBaslik">SONUÇ</p>
-        <p id="sonuc"></p>
+        <input type="text" id="kaynak" name="kaynak" />
       </div>
       <div class="butonlar">
         <button onclick="hesapla()">Hesapla</button>
         <button onclick="temizle()">Temizle</button>
+      </div>
+      <div class="sonucu">
+        <p id="sonucBaslik" style="display: none">SONUÇ</p>
+        <table>
+          <thead>
+            <tr>
+              <th id="birinciBaslik"></th>
+              <th id="ikinciBaslik"></th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
       </div>
     </div>
     <div class="resimContainer">
@@ -66,13 +73,15 @@
       function hesapla() {
         const sonucu = document.getElementById("sonuc");
         const secili = document.querySelector('input[name="secim"]:checked');
+        document.getElementById("birinciBaslik").innerText = "Düğüm";
+        document.getElementById("ikinciBaslik").innerText = "Mesafe";
         const kaynakDeger = document.getElementById("kaynak").value;
         if (!secili) {
           alert("Graf türünü boş bırakmayın");
-        }
-        if (kaynakDeger.trim() == "") {
+        } else if (kaynakDeger.trim() == "") {
           alert("Kaynak düğümünü boş bırakmayın");
         } else {
+          document.getElementById("sonucBaslik").style.display = "";
           if (secili) {
             if (secili.value === "yonlu") {
               let regex = /^[ABCDEabcde]$/;
@@ -89,7 +98,12 @@
                   E: { A: 2, D: 6 },
                 };
                 var sonuc = dijkstra(graf, kaynakDeger.toUpperCase());
-                sonucu.innerText = JSON.stringify(sonuc);
+
+                let sonuclar = "";
+                for (let key in sonuc) {
+                  sonuclar += `<tr><td>${key}</td><td>${sonuc[key]}</td></tr>`;
+                }
+                document.querySelector("tbody").innerHTML = sonuclar;
               }
             } else if (secili.value === "yonsuz") {
               let regex = /^[0-8]$/;
@@ -110,21 +124,27 @@
                   8: { 2: 2, 6: 6, 7: 7 },
                 };
                 var sonuc = dijkstra(graf, kaynakDeger);
-                sonucu.innerText = JSON.stringify(sonuc);
+                let sonuclar = "";
+                for (let key in sonuc) {
+                  sonuclar += `<tr><td>${key}</td><td>${sonuc[key]}</td></tr>`;
+                }
+                document.querySelector("tbody").innerHTML = sonuclar;
               }
             }
           }
         }
       }
       function temizle() {
-        const sonucu = document.getElementById("sonuc");
-        const secili = document.querySelector('input[name="secim"]:checked');
-        const kaynakDeger = document.getElementById("kaynak");
-        sonucu.innerText = "";
-        kaynakDeger.value = "";
-        secili.checked = false;
+        document.querySelector("tbody").innerHTML = "";
+        document.getElementById("birinciBaslik").innerText = "";
+        document.getElementById("ikinciBaslik").innerText = "";
+        document.getElementById("sonucBaslik").style.display = "none";
         document.getElementById("resim2").style.display = "none";
         document.getElementById("resim1").style.display = "none";
+        const secili = document.querySelector('input[name="secim"]:checked');
+        const kaynakDeger = document.getElementById("kaynak");
+        kaynakDeger.value = "";
+        secili.checked = false;
       }
     </script>
   </body>
