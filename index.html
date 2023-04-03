@@ -40,7 +40,7 @@
         <button onclick="temizle()">Temizle</button>
       </div>
       <div class="sonucu">
-        <p id="sonucBaslik" style="display: none">SONUÇ</p>
+        <p id="sonucBaslik"></p>
         <table>
           <thead>
             <tr>
@@ -71,7 +71,6 @@
         }
       }
       function hesapla() {
-        const sonucu = document.getElementById("sonuc");
         const secili = document.querySelector('input[name="secim"]:checked');
         const kaynakDeger = document.getElementById("kaynak").value;
         if (!secili) {
@@ -81,8 +80,6 @@
         } else {
           document.getElementById("sonucBaslik").style.display = "";
           if (secili) {
-            document.getElementById("birinciBaslik").innerText = "Düğüm";
-            document.getElementById("ikinciBaslik").innerText = "Mesafe";
             if (secili.value === "yonlu") {
               let regex = /^[ABCDEabcde]$/;
               if (!regex.test(kaynakDeger)) {
@@ -90,6 +87,9 @@
                   "Lütfen yalnızca 'A/a', 'B/b', 'C/c', 'D/d', 'E/e' harflerinden birini girin!"
                 );
               } else {
+                document.getElementById("sonucBaslik").innerText = "SONUÇ";
+                document.getElementById("birinciBaslik").innerText = "Düğüm";
+                document.getElementById("ikinciBaslik").innerText = "Mesafe";
                 const graf = {
                   A: { B: 10, C: 5 },
                   B: { D: 1 },
@@ -112,6 +112,9 @@
                   "Lütfen yalnızca 0,1,2,3,4,5,6,7,8 rakamlarından birini girin!"
                 );
               } else {
+                document.getElementById("sonucBaslik").innerText = "SONUÇ";
+                document.getElementById("birinciBaslik").innerText = "Düğüm";
+                document.getElementById("ikinciBaslik").innerText = "Mesafe";
                 const graf = {
                   0: { 1: 4, 7: 8 },
                   1: { 0: 4, 2: 8, 7: 11 },
@@ -138,7 +141,7 @@
         document.querySelector("tbody").innerHTML = "";
         document.getElementById("birinciBaslik").innerText = "";
         document.getElementById("ikinciBaslik").innerText = "";
-        document.getElementById("sonucBaslik").style.display = "none";
+        document.getElementById("sonucBaslik").innerText = "";
         document.getElementById("resim2").style.display = "none";
         document.getElementById("resim1").style.display = "none";
         const secili = document.querySelector('input[name="secim"]:checked');
