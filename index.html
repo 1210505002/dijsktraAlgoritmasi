@@ -80,9 +80,9 @@
           alert("Kaynak düğümünü boş bırakmayın");
         } else {
           document.getElementById("sonucBaslik").style.display = "";
-          document.getElementById("birinciBaslik").innerText = "Düğüm";
-          document.getElementById("ikinciBaslik").innerText = "Mesafe";
           if (secili) {
+            document.getElementById("birinciBaslik").innerText = "Düğüm";
+            document.getElementById("ikinciBaslik").innerText = "Mesafe";
             if (secili.value === "yonlu") {
               let regex = /^[ABCDEabcde]$/;
               if (!regex.test(kaynakDeger)) {
